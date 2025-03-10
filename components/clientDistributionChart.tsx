@@ -20,23 +20,22 @@ export function ClientDistributionChart() {
     const ctx = chartRef.current.getContext("2d")
     if (!ctx) return
 
-    // Custom plugin to add text in the center
-    const centerTextPlugin = {
-      id: "centerText",
-      beforeDraw: function (chart: Chart) {
-        const { width } = chart
-        const { height } = chart
-        const ctx = chart.ctx
-        ctx.save()
-        ctx.font = "bold 30px Arial"
-        ctx.fillStyle = "#000"
-        ctx.textAlign = "center"
-        ctx.textBaseline = "middle"
-        ctx.fillText("14", width / 2, height / 2) // Centering the text
-        // ctx.fillText("Total Clients", width / 2, height / 1.5) // Centering the text
-        ctx.restore()
-      },
-    }
+        // Custom plugin to add text in the center
+        const centerTextPlugin = {
+          id: "centerText",
+          beforeDraw: function (chart: Chart) {
+            const { width } = chart
+            const { height } = chart
+            const ctx = chart.ctx
+            ctx.save()
+            ctx.font = "bold 24px Arial"
+            ctx.fillStyle = "#000"
+            ctx.textAlign = "center"
+            ctx.textBaseline = "middle"
+            ctx.fillText("14", width / 2, height / 2) // Centering the text
+            ctx.restore()
+          },
+        }
 
     // Create new chart
     chartInstance.current = new Chart(ctx, {
@@ -73,7 +72,7 @@ export function ClientDistributionChart() {
           },
         },
       },
-      plugins: [centerTextPlugin], // Register the custom plugin
+      plugins: [centerTextPlugin], 
     })
 
     return () => {
@@ -84,8 +83,9 @@ export function ClientDistributionChart() {
   }, [])
 
   return (
-    <div className="relative h-48 w-48">
+    <div className="relative h-[13rem] w-[13rem]">
       <canvas ref={chartRef} />
     </div>
   )
 }
+
