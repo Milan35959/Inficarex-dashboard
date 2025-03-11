@@ -1,30 +1,50 @@
 "use client"
 
 import type React from "react"
-
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { Eye, EyeOff, Loader2 } from "lucide-react"
+import { useEffect } from "react"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "./ui/card"
+import { Label } from "./ui/label"
+import { Input } from "./ui/input"
+import { Button } from "./ui/button"
+import { Eye, EyeOff } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-
-export function LoginForm() {
-  const router = useRouter()
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState("")
-  const [showPassword, setShowPassword] = useState(false)
+const LoginForm = () => {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
   })
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState("")
+  const router = useRouter()
+  const [showPassword, setShowPassword] = useState(false)
+
+  useEffect(() => {
+    // Check if user is already logged in (has a token)
+    const checkExistingToken = async () => {
+      const storedToken = localStorage.getItem("access_token")
+
+      if (storedToken) {
+        // Import the setAccessToken function
+        const { setAccessToken } = await import("@/lib/auth")
+
+        // Set the token in auth.js
+        setAccessToken(storedToken)
+
+        // Redirect to dashboard if token exists
+        router.push("/login")
+      }
+    }
+
+    checkExistingToken()
+  }, [router])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target
-    setFormData((prev) => ({ ...prev, [name]: value }))
-    setError("")
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    })
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -40,18 +60,37 @@ export function LoginForm() {
     }
 
     try {
-      // Simulate authentication delay
-      await new Promise((resolve) => setTimeout(resolve, 1500))
+      const response = await fetch("https://api.inficurex.com/api/v1/system-login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password,
+        }),
+      })
 
-      // In a real app, you would validate credentials against your backend
-      // For demo purposes, we'll just check for a simple condition
-      if (formData.email === "user@example.com" && formData.password === "password") {
+      const data = await response.json()
+
+      if (data.success) {
+        // Import the setAccessToken function from your auth.js
+        const { setAccessToken } = await import("@/lib/auth")
+
+        // Store the token for future API requests
+        setAccessToken(data.data.access_token)
+
+        // Save token to localStorage for persistence across page refreshes
+        localStorage.setItem("access_token", data.data.access_token)
+
         // Redirect to dashboard on successful login
         router.push("/dashboard")
       } else {
-        setError("Invalid email or password")
+        setError(data.message || "Invalid email or password")
       }
     } catch (err) {
+      console.error("Login error:", err)
       setError("An error occurred. Please try again.")
     } finally {
       setIsLoading(false)
@@ -59,8 +98,28 @@ export function LoginForm() {
   }
 
   return (
+    // <form onSubmit={handleSubmit}>
+    //   {error && <div className="error">{error}</div>}
+    //   <div>
+    //     <label htmlFor="email">Email</label>
+    //     <input type="email" id="email" name="email" value={formData.email} onChange={handleChange} required />
+    //   </div>
+    //   <div>
+    //     <label htmlFor="password">Password</label>
+    //     <input
+    //       type="password"
+    //       id="password"
+    //       name="password"
+    //       value={formData.password}
+    //       onChange={handleChange}
+    //       required
+    //     />
+    //   </div>
+    //   <button type="submit" disabled={isLoading}>
+    //     {isLoading ? "Loading..." : "Login"}
+    //   </button>
+    // </form>
     <Card className="w-full">
-        
       <CardHeader>
         <CardTitle className="text-2xl font-bold">Login</CardTitle>
         <CardDescription>
@@ -68,39 +127,31 @@ export function LoginForm() {
         </CardDescription>
       </CardHeader>
       <form onSubmit={handleSubmit}>
-        <CardContent className="space-y-4 pt-2">
-          <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input
-              id="email"
-              name="email"
-              type="email"
-              placeholder="name@example.com"
-              value={formData.email}
-              onChange={handleChange}
-              disabled={isLoading}
-              required
-            />
-          </div>
-          <div className="space-y-2">
-            <div className="flex items-center justify-between">
-              <Label htmlFor="password">Password</Label>
-              <Button variant="link" className="h-auto p-0 text-xs" type="button">
-                Forgot password?
-              </Button>
-            </div>
-            <div className="relative">
-              <Input
-                id="password"
-                name="password"
-                type={showPassword ? "text" : "password"}
-                placeholder="••••••••"
-                value={formData.password}
-                onChange={handleChange}
-                disabled={isLoading}
-                required
-              />
-              <Button
+      {error && <div className="error">{error}</div>}
+      <CardContent className="space-y-4 pt-2">
+        <div className="space-y-2">
+        <Label htmlFor="email">Email</Label>
+        <Input type="email" id="email" name="email" placeholder="name@example.com" value={formData.email} onChange={handleChange} required />
+
+        </div>
+        <div className="space-y-2">
+        <Label htmlFor="password">Password</Label>
+        <div className="flex items-center justify-between">
+            <Button variant="link" className="h-auto p-0 text-xs" type="button">
+                    Forgot password?
+            </Button>
+        </div>
+        <div className="relative">
+        <Input
+          type="password"
+          id="password"
+          name="password"
+          value={formData.password}
+          onChange={handleChange}
+          required
+          placeholder="Enter your password"
+          />
+          <Button
                 type="button"
                 variant="ghost"
                 size="icon"
@@ -114,30 +165,31 @@ export function LoginForm() {
                   <Eye className="h-4 w-4 text-muted-foreground" />
                 )}
                 <span className="sr-only">{showPassword ? "Hide password" : "Show password"}</span>
-              </Button>
-            </div>
-          </div>
-          {error && <div className="text-sm font-medium text-destructive">{error}</div>}
-        </CardContent>
-        <CardFooter className="flex flex-col">
-          <Button className="w-full" type="submit" disabled={isLoading}>
-            {isLoading ? (
-              <>
-                <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Signing in...
-              </>
-            ) : (
-              "Sign in"
-            )}
           </Button>
-          <div className="mt-4 text-center text-sm">
+
+        </div>
+        </div>
+        {error && <div className="text-sm font-medium text-destructive">{error}</div>}
+
+      </CardContent>
+      <CardFooter className="flex flex-col">
+        <Button type="submit" disabled={isLoading} className="w-full">
+          {isLoading ? "Loading..." : "Login"}
+        </Button>
+        <div className="mt-4 text-center text-sm">
             Don&apos;t have an account?{" "}
             <Button variant="link" className="h-auto p-0">
               Sign up
             </Button>
           </div>
+
         </CardFooter>
+
       </form>
+
     </Card>
   )
 }
+
+export default LoginForm
+

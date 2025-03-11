@@ -1,6 +1,6 @@
 "use client"
 import Link from "next/link"
-import {ChevronRightIcon,LayoutDashboard,Calendar,Users,User,Building2,BookUser,SquarePlus, NotebookPen,Book,Receipt,FileClock,Settings2,UserCog, ChevronsUpDown, UsersIcon, SettingsIcon, CreditCardIcon, BellIcon, LogOutIcon, UserIcon, ChevronDownIcon} from "lucide-react"
+import {ChevronRightIcon,LayoutDashboard,Calendar,Users,User,Building2,BookUser,SquarePlus, NotebookPen,Book,Receipt,FileClock,Settings2,UserCog, ChevronsUpDown, UsersIcon, SettingsIcon, CreditCardIcon, BellIcon, LogOutIcon, UserIcon, ChevronDownIcon, Users2} from "lucide-react"
 import { DropdownMenu, DropdownMenuTrigger } from "./ui/dropdown-menu"
 import { Button } from "./ui/button"
 import { DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator } from "@radix-ui/react-dropdown-menu"
@@ -13,35 +13,14 @@ export function DashboardSidebar() {
   const [logOpen, setLogOpen] = useState(false);
   return (
     <aside className="flex h-screen w-64 flex-col border-r bg-slate-50 text-gray-700">
-      <div className="flex items-center justify-between  p-4">
-        {/* Left side: Icon and text wrapped in Dropdown Trigger */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost" className="flex items-center justify-between gap-3 p-0 h-auto">
-              <div className="flex h-10 w-10 items-center justify-center rounded-md bg-black text-white">
-                <span>TC</span>
+      <div className="flex items-center gap-3  p-4">
+      <div className="flex h-10 w-10 items-center justify-center rounded-md bg-black text-white">
+                <span>IC</span>
               </div>
               <div className="text-left">
-                <h2 className="font-semibold leading-none">Tamrakar Cares</h2>
+                <h2 className="font-semibold leading-none">InficureX</h2>
                 <p className="text-sm text-muted-foreground">admin</p>
               </div>
-              <ChevronsUpDown className="h-4 w-4 text-muted-foreground" />
-            </Button>
-          </DropdownMenuTrigger>
-
-          {/* Dropdown Content */}
-          <DropdownMenuContent side="right" align="start" className="w-48 bg-white mb-4 rounded-md border-1 border-gray-200 shadow-lg">
-            <DropdownMenuItem className="flex items-center gap-2 p-2 border-b-2 border-slate-100">
-              
-              <span className="text-slate-400 font-medium ">Provider</span>
-            </DropdownMenuItem >
-            <DropdownMenuItem className="flex items-center gap-2 p-2 border-b-2 border-slate-100">
-              <SquarePlus className="text-slate-400"/>
-              <span className="text-slate-400 font-sm text-sm ">Add Provider</span>
-            </DropdownMenuItem>
-         
-          </DropdownMenuContent>
-        </DropdownMenu>
       </div>
 
 
@@ -55,13 +34,7 @@ export function DashboardSidebar() {
               <LayoutDashboard/>
               Dashboard
             </Link>
-            <Link
-              href="/roster"
-              className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
-            >
-            <Calendar/>
-              Roster
-            </Link>
+           
             <div>
             <button
               onClick={() => setHrmOpen(!hrmOpen)}
@@ -95,6 +68,13 @@ export function DashboardSidebar() {
             )}
           </div>
             <Link
+              href="/ndis"
+              className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
+            >
+              <Users2/>
+              NDIS
+            </Link>
+            <Link
               href="/clients"
               className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
             >
@@ -115,13 +95,7 @@ export function DashboardSidebar() {
               <BookUser/> 
               Contacts
             </Link>
-            <Link
-              href="/updates"
-              className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
-            >
-              <NotebookPen/>
-              Updates
-            </Link>
+            
             <Link
               href="/packages"
               className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
@@ -129,13 +103,7 @@ export function DashboardSidebar() {
              <Book/>
               Packages
             </Link>
-            <Link
-              href="/invoices"
-              className="flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium text-gray-700 hover:bg-gray-100"
-            >
-              <Receipt/>
-              Invoices
-            </Link>
+          
             <div>
             <button
               onClick={() => setLogOpen(!logOpen)}
@@ -230,10 +198,13 @@ export function DashboardSidebar() {
           <span>Notifications</span>
         </DropdownMenuItem>
         <DropdownMenuSeparator />
+        <Link href="/login">
         <DropdownMenuItem className="text-red-600 flex items-center gap-2 p-2 border-b-2 border-slate-100">
           <LogOutIcon className="mr-2 h-4 w-4" />
           <span>Log out</span>
-        </DropdownMenuItem>
+        </DropdownMenuItem> 
+        </Link>
+    
       </DropdownMenuContent>
     </DropdownMenu>
   </div>

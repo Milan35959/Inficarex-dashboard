@@ -1,13 +1,14 @@
 "use client"
 
 import { useState } from "react"
-import { BookOpen, ChevronDown, ChevronRight, Eye, Plus, Tally1, Trash2 } from "lucide-react"
+import { BookOpen, ChevronDown, ChevronRight, Eye, Plus, Tally1, Trash2, ArrowDownUp } from "lucide-react"
 import Link from "next/link"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
+import Breadcrumb from "@/components/breadcrumb"
 
 export default function StaffsPage() {
   const [currentPage, setCurrentPage] = useState(1)
@@ -76,16 +77,7 @@ export default function StaffsPage() {
   return (
     <div className="flex-1 space-y-4 p-4 md:p-6 pt-6">
       {/* Breadcrumb */}
-      <div className="flex items-center space-x-1 text-sm text-gray-500">
-      <BookOpen/> 
-        
-      <Tally1 className="h-10 w-8 pl-2 " />
-        <Link href="/dashboard" className="hover:text-blue-600">
-          Dashboard
-        </Link>
-        <ChevronRight className="h-4 w-4" />
-        <span className="font-medium text-gray-900">Staffs</span>
-      </div>
+      <Breadcrumb linkHref="/Dashboard" linkLabel="HRM" currentPage="Staff"/>
 
       {/* Stats Cards */}
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -217,7 +209,7 @@ export default function StaffsPage() {
               <TableHead className="bg-blue-50">USER NAME</TableHead>
               <TableHead className="bg-blue-50">
                 EMAIL
-                <ChevronDown className="ml-2 inline-block h-4 w-4" />
+                < ArrowDownUp className="ml-2 inline-block h-4 w-4" />
               </TableHead>
               <TableHead className="bg-blue-50">PHONE</TableHead>
               <TableHead className="bg-blue-50">STATUS</TableHead>
