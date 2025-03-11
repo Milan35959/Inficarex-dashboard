@@ -1,12 +1,15 @@
-import { LoginForm } from "@/components/loginForm";
+// app/page.tsx
+import { redirect } from "next/navigation";
 
 export default function Home() {
-  return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-gray-50 p-4">
-    <div className="w-full max-w-md">
-     
-      <LoginForm />
-    </div>
-  </div>
-  );
+  // 🔐 In a real app, check auth status here
+  const isLoggedIn = false; // Replace with real auth check!
+
+  if (isLoggedIn) {
+    redirect("/dashboard");
+  } else {
+    redirect("/login");
+  }
+
+  return null; // Just in case
 }

@@ -1,9 +1,9 @@
 // import { DashboardHeader } from "@/components/dashboard-header"
 import { ClientDistributionChart } from "@/components/clientDistributionChart"
-import { DashboardSidebar } from "@/components/dashboard-sidebar"
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 
-import { User, Users,MessageSquare,BookOpen, CalendarIcon, SettingsIcon, UsersIcon, UserPlusIcon } from "lucide-react"
+import { User, Users,MessageSquareWarning,BookOpen, CalendarIcon, SettingsIcon, UsersIcon, UserPlusIcon,TriangleAlert  } from "lucide-react"
 import Link from "next/link"
 
 export default function DashboardPage() {
@@ -46,7 +46,7 @@ export default function DashboardPage() {
           <Card className="w-[300px] h-[110px]">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Complaints</CardTitle>
-            <MessageSquare/>
+            <MessageSquareWarning/>
             </CardHeader>
             <CardContent>
               <div className="text-4xl font-bold">0</div>
@@ -56,7 +56,7 @@ export default function DashboardPage() {
           <Card className="bg-red-500 text-white w-[300px] h-[110px]">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium">Incidents</CardTitle>
-              <MessageSquare/>
+              <TriangleAlert />
             </CardHeader>
             <CardContent>
               <div className="text-4xl font-bold">0</div>
