@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { useRouter } from "next/navigation"
 import Breadcrumb from "@/components/breadcrumb"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -8,7 +9,6 @@ import { Input } from "@/components/ui/input"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { ArrowDownUp, Eye, Plus, Trash2, Users, UserX, UserCheck, UserPlus, RefreshCcw } from "lucide-react"
 import { apiRequest } from "@/lib/auth"
-import { AddNdisProviderForm } from "@/components/ndis/add-ndis-provider-form"
 
 interface NdisProvider {
   id: string
@@ -47,7 +47,7 @@ export default function NdisPage() {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [searchTerm, setSearchTerm] = useState("")
-  const [isAddDialogOpen, setIsAddDialogOpen] = useState(false)
+  const router = useRouter()
 
   const fetchNdisData = async () => {
     try {
@@ -153,7 +153,7 @@ export default function NdisPage() {
               Retry
             </Button>
           )}
-          <Button className="gap-2 bg-black hover:bg-blue-700" onClick={() => setIsAddDialogOpen(true)}>
+          <Button className="gap-2 bg-black hover:bg-blue-700" onClick={() => router.push("/ndis/add")}>
             <Plus className="h-4 w-4" />
             Add New NDIS Provider
           </Button>
@@ -217,9 +217,6 @@ export default function NdisPage() {
           </TableBody>
         </Table>
       </div>
-
-      {/* Add NDIS Provider Form Dialog */}
-      <AddNdisProviderForm open={isAddDialogOpen} onOpenChange={setIsAddDialogOpen} onSuccess={fetchNdisData} />
     </div>
   )
 }
