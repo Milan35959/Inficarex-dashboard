@@ -119,7 +119,7 @@ const LoginForm = () => {
     //     {isLoading ? "Loading..." : "Login"}
     //   </button>
     // </form>
-    <Card className="w-full">
+    <Card className="w-full ">
       <CardHeader>
         <CardTitle className="text-2xl font-bold">Login</CardTitle>
         <CardDescription>
@@ -128,7 +128,7 @@ const LoginForm = () => {
       </CardHeader>
       <form onSubmit={handleSubmit}>
       {error && <div className="error">{error}</div>}
-      <CardContent className="space-y-4 pt-2">
+      <CardContent className="space-y-4 pt-2 mb-4">
         <div className="space-y-2">
         <Label htmlFor="email">Email</Label>
         <Input type="email" id="email" name="email" placeholder="name@example.com" value={formData.email} onChange={handleChange} required />
